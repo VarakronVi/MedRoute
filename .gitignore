@@ -1,0 +1,13 @@
+# Compiled executable
+MedRoute
+MedRoute.exe
+
+# OS generated files
+.DS_Store
+
+# Exclude documentation folder as requested
+docs/
+
+# Exclude unintegrated legacy module subfolders to keep repository clean
+MedRoute code by dnee/
+aomsin.feature3/

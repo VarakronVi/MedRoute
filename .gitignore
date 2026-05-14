@@ -11,3 +11,6 @@ docs/
 # Exclude unintegrated legacy module subfolders to keep repository clean
 MedRoute code by dnee/
 aomsin.feature3/
+
+# Exclude presentation file
+MedRoute_Presentation.pptx

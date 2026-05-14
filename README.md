@@ -1,6 +1,6 @@
 # 🏥 MedRoute: Hospital Queue & Routing Management System
 
-**MedRoute** is an advanced smart hospital queueing, load-balancing, and patient routing system built in C++17. Developed as a collaborative academic project for the **Data Structures & Algorithms** course, it demonstrates practical implementation of foundational computer science data structures to solve real-world hospital operational bottlenecks.
+**MedRoute** is an advanced smart hospital queueing, load-balancing, and patient routing system built in C++. Developed as a collaborative academic project for the **Data Structures & Algorithms** course, it demonstrates practical implementation of foundational computer science data structures to solve real-world hospital operational bottlenecks.
 
 ---
 

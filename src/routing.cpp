@@ -79,7 +79,8 @@ Doctor* assignDoctorToCase(Patient* p) {
 
     if (assignedDoc != nullptr) {
         incrementCase(assignedDoc->id);
-        addHistoryNode(p->id, "Assigned to Dr. " + assignedDoc->name + " (" + assignedDoc->department + ")");
+        addHistoryNode(p->id, "Assigned to " + assignedDoc->name + 
+            " (A" + to_string(assignedDoc->level) + ", " + assignedDoc->department + ")");
         return assignedDoc;
     }
 
@@ -102,7 +103,8 @@ Doctor* assignDoctorToCase(Patient* p) {
             if (d != nullptr) {
                 cout << "[SUCCESS] Cascading BFS found backup doctor in department: " << currDept << endl;
                 incrementCase(d->id);
-                addHistoryNode(p->id, "Cascading assigned to backup Dr. " + d->name + " (" + d->department + ")");
+                addHistoryNode(p->id, "Cascading assigned to backup " + d->name + 
+                    " (A" + to_string(d->level) + ", " + d->department + ")");
                 return d;
             }
         }
@@ -273,15 +275,47 @@ void mainMenu() {
 
             Patient* p = registerPatient(name, symptom, urgency);
             if (p != nullptr) {
-                // Initial baseline entry station routing
-                addPatientToStation("S01", p->id);
-                pushStation(p->id, "S01");
-                
+                // ===== T08: ถ้าอาการไม่รู้จัก ให้พยาบาลเลือกแผนกเอง =====
+                if (p->department == "unknown") {
+                    cout << "\n[WARN] Symptom '" << symptom << "' not in database!" << endl;
+                    cout << "Please choose department manually:" << endl;
+                    cout << "  1. Internal Medicine" << endl;
+                    cout << "  2. Surgery" << endl;
+                    cout << "  3. Pediatrics" << endl;
+                    cout << "  4. Emergency" << endl;
+                    cout << "  5. Obstetrics" << endl;
+                    cout << "Choice (1-5): ";
+                    int deptChoice;
+                    cin >> deptChoice;
+
+                    switch (deptChoice) {
+                        case 1: p->department = "Internal Medicine"; break;
+                        case 2: p->department = "Surgery"; break;
+                        case 3: p->department = "Pediatrics"; break;
+                        case 4: p->department = "Emergency"; break;
+                        case 5: p->department = "obstetrics"; break;
+                        default: p->department = "Internal Medicine"; break;
+                    }
+
+                    if (p->difficulty == 0) p->difficulty = urgency;
+                    cout << "[OK] Manually set department to: " << p->department << endl;
+                }
+
+                Station* targetStation = findFreeStation();
+                if (targetStation == nullptr) {
+                    targetStation = findEarliestFreeStation();
+                }
+
+                addPatientToStation(targetStation->id, p->id);
+                pushStation(p->id, targetStation->id);
+
                 cout << "\nSearching for optimal doctor via Graph BFS Routing..." << endl;
                 Doctor* assigned = assignDoctorToCase(p);
                 if (assigned != nullptr) {
-                    cout << "[SUCCESS] Assigned patient " << p->name << " to " << assigned->name 
-                         << " in department " << assigned->department << " successfully!" << endl;
+                    cout << "[SUCCESS] Assigned patient " << p->name << " to " << assigned->name
+                         << " (A" << assigned->level << ") in department " << assigned->department
+                         << " | Cases: " << assigned->current_cases << "/" << assigned->max_threshold
+                         << endl;
                 }
             }
         } else if (choice == "2") {

@@ -100,6 +100,9 @@ static void bstClear(DoctorBSTNode* root) {
 
 struct DoctorHeapCompare {
     bool operator()(Doctor* a, Doctor* b) {
+        if (a->level != b->level) {
+            return a->level > b->level;
+        }
         return a->current_cases > b->current_cases;
     }
 };

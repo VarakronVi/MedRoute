@@ -14,3 +14,7 @@ aomsin.feature3/
 
 # Exclude presentation file
 MedRoute_Presentation.pptx
+*.dSYM/
+src/output/
+MedRouteTest
+test_t07.txt

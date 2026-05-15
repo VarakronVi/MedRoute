@@ -266,6 +266,7 @@ void pushStation(string patientID, string stationID) {
     }
     p->stationStack.push(stationID);
     cout << "[INFO] " << patientID << " entered station: " << stationID << endl;
+    addHistoryNode(patientID, "Entered station: " + stationID);
 }
 
 
@@ -289,6 +290,7 @@ string popStation(string patientID) {
     string topStation = p->stationStack.top(); // read top
     p->stationStack.pop();                      // remove top
     cout << "[INFO] " << patientID << " left station: " << topStation << endl;
+    addHistoryNode(patientID, "Left station: " + topStation);
     return topStation;
 }
 
